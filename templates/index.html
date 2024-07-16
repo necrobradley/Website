@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sentiment Analysis</title>
+</head>
+<body>
+    <h1>Sentiment Analysis Application</h1>
+    <form id="review-form">
+        <label for="review">Enter your review:</label>
+        <textarea id="review" name="review" rows="4" cols="50"></textarea>
+        <button type="submit">Submit</button>
+    </form>
+    <h2 id="result"></h2>
+
+    <script>
+        document.getElementById('review-form').onsubmit = function(event) {
+            event.preventDefault();
+            const review = document.getElementById('review').value;
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ review: review })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = `Sentiment: ${data.sentiment}`;
+            });
+        };
+    </script>
+</body>
+</html>
